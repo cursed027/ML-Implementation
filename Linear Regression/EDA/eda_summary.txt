@@ -1,0 +1,45 @@
+#📊 EDA Summary: Fish Weight Prediction
+
+    📁 Dataset Overview:
+    The dataset includes features: Length1, Length2, Length3, Height, Width, and Weight (target).
+
+    Goal: Predict Weight of a fish based on physical dimensions.
+
+    1️. Target Distribution (Weight)
+    Skewness: Right-skewed distribution (positively skewed)
+    Action: Log transformation suggested (log1p) to normalize it for regression
+
+    2️. Boxplot of Target
+    Shows 3 clear outliers above ~1400g
+    Interpretation: These could be large fish, not necessarily data errors
+    Action: Retain them; apply log-transform to reduce their influence
+
+    3️. Feature Distributions
+    All features (Length, Height, Width) are also right-skewed
+    Action: Scaling (StandardScaler) is recommended; log-transform not mandatory unless strong skew persists after scaling
+
+    4️. Multivariate Outlier Check (Boxplot)
+    Weight again shows major spread and outliers
+    Features appear tightly packed and low-variance compared to the target
+    Action: No feature outlier removal needed at this stage
+
+    5. Correlation Matrix
+    Length1, Length2, Length3 are ~0.99 correlated → strong multicollinearity
+
+    Weight correlates well with:
+    Length1/2/3 → ~0.92
+    Width → ~0.89
+    Height → ~0.72
+
+    Action:
+    Drop 2 of the 3 length features or average them
+    Possibly drop Height if minimal improvement during training
+
+    6️. Target vs Feature Relationship
+    Visual trend: Non-linear relationship (looks quadratic or exponential)
+    Linear model might underfit, so try Polynomial Regression (deg=2)
+
+    7. Boxplot of Weight by Species
+    Trend : Clear species-wise separation in weight
+    Observation : Pike and Bream are heaviest; Smelt is lightest
+    Action : Species is a high-impact categorical variable — should be one-hot encoded
